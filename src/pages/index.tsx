@@ -1,22 +1,26 @@
 import { type NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
+import useUserStore from "../../store/user";
 import { api } from "../utils/api";
 
 const Home: NextPage = () => {
+  const router = useRouter();
+  const setEmail = useUserStore((state) => state.setEmail);
   const postUser = api.user.post.useMutation();
 
-  const [email, setEmail] = useState("");
+  const [emailInput, setEmailInput] = useState("");
 
   const handleSetEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail((_) => e.target.value);
+    setEmailInput((_) => e.target.value);
   };
 
-  const handleCreateUser = () => {
-    if (email.length === 0) return;
-    postUser.mutate({ email });
+  const handleUser = () => {
+    if (emailInput.length === 0) return;
+    postUser.mutate({ email: emailInput });
+    setEmail(emailInput);
+    router.push("/dashboard");
   };
 
   return (
@@ -29,7 +33,7 @@ const Home: NextPage = () => {
         />
         <button
           className="text-bold rounded-md bg-blue-500 px-4 py-2 text-white"
-          onClick={handleCreateUser}
+          onClick={handleUser}
         >
           Create
         </button>
