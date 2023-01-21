@@ -20,7 +20,7 @@ const Home: NextPage = () => {
     if (emailInput.length === 0) return;
     postUser.mutate({ email: emailInput });
     setEmail(emailInput);
-    router.push("/dashboard");
+    router.push("/dashboard").catch((err) => console.log(err));
   };
 
   return (

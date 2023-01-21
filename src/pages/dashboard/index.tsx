@@ -1,10 +1,11 @@
+import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 
 import useUserStore from "../../../store/user";
 import rndJson from "../../utils/random.json";
 
-export default () => {
+const Dashboard: NextPage = () => {
   const router = useRouter();
   const email = useUserStore((state) => state.email);
 
@@ -118,6 +119,7 @@ export default () => {
                 {queryParams.map((_, idx) => (
                   <div
                     className={`${idx !== 0 ? "mt-2" : ""} flex flex-row gap-2`}
+                    key={idx}
                   >
                     <input
                       type="text"
@@ -249,7 +251,7 @@ export default () => {
                   href="#"
                   onClick={() => setResultIdx(0)}
                   className={`px-4 py-2 font-bold ${
-                    resultIdx === 0
+                    methodIdx === 0
                       ? "border-2 border-b-black border-t-transparent border-l-transparent border-r-transparent"
                       : "text-gray-300"
                   }`}
@@ -261,9 +263,7 @@ export default () => {
           </div>
           <div className="mt-4 w-full">
             <div className={resultIdx === 0 ? "block" : "hidden"}>
-              <div className="overflow-auto">
-                <pre>{JSON.stringify(rndJson, null, 2)}</pre>
-              </div>
+              <pre>{JSON.stringify(rndJson, null, 2)}</pre>
             </div>
           </div>
         </div>
@@ -271,3 +271,5 @@ export default () => {
     </div>
   );
 };
+
+export default Dashboard;
