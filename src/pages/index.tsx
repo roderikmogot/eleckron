@@ -1,11 +1,25 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-// import { api } from "../utils/api";
+import { api } from "../utils/api";
+//
+// admin_ghost
+// PUkRvvh5MooCiJQd
 
 const Home: NextPage = () => {
-  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const postUser = api.user.post.useMutation();
+
+  const [email, setEmail] = useState("");
+
+  const handleSetEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail((_) => e.target.value);
+  };
+
+  const handleCreateUser = () => {
+    postUser.mutate({ email });
+  };
 
   return (
     <>
@@ -15,7 +29,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        Ghost
+        <input placeholder="Email" onChange={handleSetEmail} />
+        <button onClick={handleCreateUser}>Create</button>
       </div>
     </>
   );
