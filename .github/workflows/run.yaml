@@ -1,12 +1,11 @@
 name: ghost-api-run
 on: push
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Load env
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - name: Get code
         uses: actions/checkout@v3
       - name: Setup Node.js
@@ -21,9 +20,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Load env
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - name: Get code
         uses: actions/checkout@v3
       - name: Setup Node.js
