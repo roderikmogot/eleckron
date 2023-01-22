@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import useUserStore from "../../store/user";
+import useUserStore from "../../store/use-user.store";
 import { api } from "../utils/api";
 
 const Home: NextPage = () => {

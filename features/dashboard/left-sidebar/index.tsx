@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import useUserStore from "../../../store/user";
+import useUserStore from "../../../store/use-user.store";
 
 const Sidebar = () => {
   const email = useUserStore((state) => state.email);
