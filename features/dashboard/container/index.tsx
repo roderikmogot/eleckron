@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import UIInput from "../../ui/input/input.ui";
 import UITabs from "../../ui/tabs/tabs.ui";
 import useQueryParamsStore from "../../../store/use-query-params.store";
+import DeleteIcon from "../../ui/svgs/delete-icon.ui";
 
 const REQUEST_METHODS = ["GET", "POST", "PUT", "DELETE"];
 const CONTAINER_TABS = ["Query", "Auth", "Body"];
@@ -95,20 +96,7 @@ const Container = () => {
                   disabled={queryParams.length === 1}
                   onClick={() => handleDeleteQueryParam(idx)}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                  <DeleteIcon />
                 </button>
               </div>
             ))}
