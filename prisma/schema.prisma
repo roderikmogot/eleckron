@@ -11,15 +11,15 @@ datasource db {
 }
 
 model User {
-  id        Bytes    @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique
+  id    Bytes  @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique
   createdAt DateTime @default(now())
-  API       API[]
+  API   API[]
 }
 
 model API {
-  id          Bytes    @id @default(auto()) @map("_id") @db.ObjectId
-  uniqueId    String   @unique
+  id          Bytes  @id @default(auto()) @map("_id") @db.ObjectId
+  uniqueId    String @unique
   name        String
   url         String
   method      String
@@ -27,7 +27,7 @@ model API {
   authBasic   String
   authBearer  String
   body        String
+  userEmail   String
+  createdBy   User?   @relation(fields: [userEmail], references: [email]) 
   createdAt   DateTime @default(now())
-  userEmail       String
-  User        User?    @relation(fields: [userEmail], references: [email])
 }
