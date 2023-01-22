@@ -13,7 +13,7 @@ datasource db {
 model User {
   id    Bytes  @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique
-  createdAt DateTime @default(now())
+  createdAt DateTime? @default(now())
   API   API[]
 }
 
