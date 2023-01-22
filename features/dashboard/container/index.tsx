@@ -4,6 +4,7 @@ import UIInput from "../../ui/input/input.ui";
 import UITabs from "../../ui/tabs/tabs.ui";
 import useQueryParamsStore from "../../../store/use-query-params.store";
 
+const REQUEST_METHODS = ["GET", "POST", "PUT", "DELETE"];
 const CONTAINER_TABS = ["Query", "Auth", "Body"];
 
 const Container = () => {
@@ -47,10 +48,9 @@ const Container = () => {
     <div className="w-[45%] rounded-lg">
       <div className="flex flex-row">
         <select className="text-bold rounded-tl-md rounded-bl-md bg-black px-4 py-2 font-bold text-white">
-          <option>GET</option>
-          <option>POST</option>
-          <option>PUT</option>
-          <option>DELETE</option>
+          {REQUEST_METHODS.map((method, idx) => (
+            <option key={idx}>{method}</option>
+          ))}
         </select>
         <input
           type="text"
