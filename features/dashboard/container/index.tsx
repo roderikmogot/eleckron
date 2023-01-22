@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import UITabs from "../../ui/tabs/tabs.ui";
+
+const CONTAINER_TABS = ["Query", "Auth", "Body"];
 
 const Container = () => {
   const [authIdx, setAuthIdx] = useState(0);
@@ -6,6 +9,11 @@ const Container = () => {
   const [queryParams, setQueryParams] = useState([
     { paramater: "", value: "" },
   ]);
+
+  const handleMethodIdx = (idx: number) => {
+    setMethodIdx((_) => idx);
+  };
+
   return (
     <div className="w-[45%] rounded-lg">
       <div className="flex flex-row">
@@ -24,34 +32,11 @@ const Container = () => {
         Send
       </button>
       <div className="mt-4 w-full">
-        <ul className="flex gap-2">
-          <li>
-            <a
-              href="#"
-              onClick={() => setMethodIdx(0)}
-              className={`px-4 py-2 font-bold ${
-                methodIdx === 0
-                  ? "border-2 border-b-black border-t-transparent border-l-transparent border-r-transparent"
-                  : "text-gray-300"
-              }`}
-            >
-              Query
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              onClick={() => setMethodIdx(1)}
-              className={`px-4 py-2 font-bold ${
-                methodIdx === 1
-                  ? "border-2 border-b-black border-t-transparent border-l-transparent border-r-transparent"
-                  : "text-gray-300"
-              }`}
-            >
-              Auth
-            </a>
-          </li>
-        </ul>
+        <UITabs
+          tabs={CONTAINER_TABS}
+          methodIdx={methodIdx}
+          handleMethodIdx={handleMethodIdx}
+        />
       </div>
       <div className="mt-4 w-full">
         <div className={methodIdx === 0 ? "block" : "hidden"}>
