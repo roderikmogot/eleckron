@@ -21,15 +21,4 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
-  get: publicProcedure
-    .input(z.object({ email: z.string() }))
-    .query(async ({ input, ctx }) => {
-      return ctx.prisma.aPI.findMany({
-        where: {
-          user: {
-            email: input.email,
-          },
-        },
-      });
-    }),
 });
