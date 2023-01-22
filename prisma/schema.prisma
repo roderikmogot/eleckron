@@ -19,6 +19,7 @@ model User {
 
 model API {
   id          Bytes  @id @default(auto()) @map("_id") @db.ObjectId
+  uniqueId    String @unique
   name        String
   url         String
   method      String
