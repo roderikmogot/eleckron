@@ -13,6 +13,7 @@ datasource db {
 model User {
   id    Bytes  @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique
+  createdAt DateTime @default(now())
   API   API[]
 }
 
@@ -26,5 +27,6 @@ model API {
   authBearer  String
   body        String
   createdBy   User   @relation(fields: [userId], references: [id]) 
+  createdAt   DateTime @default(now())
   userId      Bytes
 }
