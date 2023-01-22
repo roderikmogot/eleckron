@@ -28,6 +28,6 @@ model API {
   authBearer  String
   body        String
   createdAt   DateTime @default(now())
-  email       String
-  User        User?    @relation(fields: [userId], references: [email])
+  userEmail       String
+  User        User?    @relation(fields: [userEmail], references: [email])
 }
