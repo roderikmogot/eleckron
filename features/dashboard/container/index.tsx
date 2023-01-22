@@ -1,18 +1,47 @@
 import React, { useState } from "react";
+
+import UIInput from "../../ui/input/input.ui";
 import UITabs from "../../ui/tabs/tabs.ui";
+import useQueryParamsStore from "../../../store/use-query-params.store";
 
 const CONTAINER_TABS = ["Query", "Auth", "Body"];
 
 const Container = () => {
   const [authIdx, setAuthIdx] = useState(0);
   const [methodIdx, setMethodIdx] = useState(0);
-  const [queryParams, setQueryParams] = useState([
-    { paramater: "", value: "" },
-  ]);
+  const queryParams = useQueryParamsStore((state) => state.queryParams);
+  const setQueryParams = useQueryParamsStore((state) => state.setQueryParams);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    idx: number
+  ) => {
+    const { name, value } = e.target;
+    const list = [...queryParams];
+    if (name === "parameter") {
+      list[idx]!.parameter = value;
+    }
+    if (name === "value") {
+      list[idx]!.value = value;
+    }
+    setQueryParams(list);
+  };
+
+  const handleAddQueryParams = () => {
+    setQueryParams([...queryParams, { parameter: "", value: "" }]);
+  };
+
+  const handleDeleteQueryParam = (idx: number) => {
+    const newQueryParams = [...queryParams];
+    newQueryParams.splice(idx, 1);
+    setQueryParams(newQueryParams);
+  };
 
   const handleMethodIdx = (idx: number) => {
     setMethodIdx((_) => idx);
   };
+
+  console.log(queryParams);
 
   return (
     <div className="w-[45%] rounded-lg">
@@ -47,24 +76,24 @@ const Container = () => {
                 className={`${idx !== 0 ? "mt-2" : ""} flex flex-row gap-2`}
                 key={idx}
               >
-                <input
-                  type="text"
-                  className="w-full rounded-md border border-gray-300 p-2"
+                <UIInput
+                  idx={idx}
+                  name="parameter"
+                  value={queryParams[idx]!.parameter}
                   placeholder="Parameter"
+                  handleOnChange={handleInputChange}
                 />
-                <input
-                  type="text"
-                  className="w-full rounded-md border border-gray-300 p-2"
+                <UIInput
+                  idx={idx}
+                  name="value"
+                  value={queryParams[idx]!.value}
                   placeholder="Value"
+                  handleOnChange={handleInputChange}
                 />
                 <button
                   className="text-bold rounded-md bg-red-500 p-2 text-white disabled:bg-gray-300 disabled:text-gray-500"
                   disabled={queryParams.length === 1}
-                  onClick={() => {
-                    const newParams = [...queryParams];
-                    newParams.splice(idx, 1);
-                    setQueryParams(newParams);
-                  }}
+                  onClick={() => handleDeleteQueryParam(idx)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -84,12 +113,7 @@ const Container = () => {
               </div>
             ))}
             <button
-              onClick={() =>
-                setQueryParams((prevQueryParams) => [
-                  ...prevQueryParams,
-                  { paramater: "", value: "" },
-                ])
-              }
+              onClick={handleAddQueryParams}
               className="mt-2 w-full bg-green-700 px-4 py-2 font-bold text-white"
             >
               Add
