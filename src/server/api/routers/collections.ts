@@ -1,38 +1,21 @@
 import { z } from "zod";
 
+import NEW_COLLECTION_TEMPLATE from "./constants/new-collection-template.api.utils";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const collectionsRouter = createTRPCRouter({
   post: publicProcedure
     .input(
       z.object({
-        uniqueId: z.string(),
-        name: z.string(),
-        method: z.string(),
-        url: z.string(),
-        queryParams: z.string(),
-        authBasic: z.string(),
-        authBearer: z.string(),
-        body: z.string(),
-        createdAt: z.string(),
-        userEmail: z.string(),
+        email: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {
-      return await ctx.prisma.requests.create({
-        data: {
-          uniqueId: input.uniqueId,
-          name: input.name,
-          method: input.method,
-          url: input.url,
-          queryParams: input.queryParams,
-          authBasic: input.authBasic,
-          authBearer: input.authBearer,
-          body: input.body,
-          createdAt: input.createdAt,
-          userEmail: input.userEmail,
-        },
+      const newCollection = NEW_COLLECTION_TEMPLATE(input.email);
+      const createNewCollection = await ctx.prisma.requests.create({
+        data: newCollection,
       });
+      return { data: { email: input.email } };
     }),
   get: publicProcedure
     .input(
@@ -54,8 +37,6 @@ export const collectionsRouter = createTRPCRouter({
         return rest;
       });
 
-      console.log(excludeId);
-
       const stringified = excludeId.reduce((newArr, curr) => {
         const {
           uniqueId,
@@ -66,6 +47,7 @@ export const collectionsRouter = createTRPCRouter({
           authBasic,
           authBearer,
           body,
+          responses,
           createdAt,
           userEmail,
         } = curr;
@@ -78,6 +60,7 @@ export const collectionsRouter = createTRPCRouter({
           authBasic: JSON.parse(authBasic),
           authBearer: JSON.parse(authBearer),
           body: JSON.parse(body),
+          responses: JSON.parse(responses),
           createdAt,
           userEmail,
         };

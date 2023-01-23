@@ -27,6 +27,7 @@ model Requests {
   authBasic   String
   authBearer  String
   body        String
+  responses   String
   userEmail   String
   createdBy   User?   @relation(fields: [userEmail], references: [email]) 
   createdAt   DateTime @default(now())

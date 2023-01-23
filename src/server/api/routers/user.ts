@@ -1,6 +1,9 @@
 import { z } from "zod";
+import crypto from "crypto";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
+
+import NEW_COLLECTION_TEMPLATE from "./constants/new-collection-template.api.utils";
 
 export const userRouter = createTRPCRouter({
   post: publicProcedure
@@ -12,14 +15,19 @@ export const userRouter = createTRPCRouter({
         },
       });
       if (isExisting) {
-        // returnn error code of 409
         return { error: { code: 409, message: "User already exists" } };
       }
 
-      const res = await ctx.prisma.user.create({
+      const createUser = await ctx.prisma.user.create({
         data: {
           email: input.email,
         },
+      });
+
+      const firstRequest = NEW_COLLECTION_TEMPLATE(input.email);
+
+      const createFirstRequest = await ctx.prisma.requests.create({
+        data: firstRequest,
       });
 
       return { data: { email: input.email } };
