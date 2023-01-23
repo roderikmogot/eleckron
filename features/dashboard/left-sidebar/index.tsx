@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { api } from "../../../src/utils/api";
 import useUserStore from "../../../store/use-user.store";
+import useCollectionsStore from "../../../store/use-collections.store";
 
 interface ICollection {
   uniqueId: string;
@@ -18,6 +19,9 @@ interface ICollection {
 
 const Sidebar = () => {
   const email = useUserStore((state) => state.email);
+  const { storeCollections, setStoreCollections } = useCollectionsStore(
+    (state) => state
+  );
 
   const postCollections = api.collections.post.useMutation();
   const collections = api.collections.get.useQuery({
@@ -25,6 +29,12 @@ const Sidebar = () => {
   });
 
   const [collectionsIdx, setCollectionsIdx] = useState(0);
+
+  useEffect(() => {
+    if (collections.data) {
+      setStoreCollections(collections.data);
+    }
+  }, [collections.data]);
 
   const handleCollectionTab = (id: number) => {
     setCollectionsIdx((_) => id);
@@ -44,6 +54,8 @@ const Sidebar = () => {
   if (collections.isError) {
     return <div>Error</div>;
   }
+
+  console.log(storeCollections);
 
   return (
     <div className="h-[90vh] w-[15%] overflow-auto">
