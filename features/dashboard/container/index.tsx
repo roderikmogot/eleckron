@@ -4,6 +4,7 @@ import UIInput from "../../ui/input/input.ui";
 import UITabs from "../../ui/tabs/tabs.ui";
 import useQueryParamsStore from "../../../store/use-query-params.store";
 import DeleteIcon from "../../ui/svgs/delete-icon.ui";
+import useCollectionsStore from "../../../store/use-collections.store";
 
 const REQUEST_METHODS = ["GET", "POST", "PUT", "DELETE"];
 const CONTAINER_TABS = ["Query", "Auth", "Body"];
@@ -13,6 +14,10 @@ const Container = () => {
   const [methodIdx, setMethodIdx] = useState(0);
   const queryParams = useQueryParamsStore((state) => state.queryParams);
   const setQueryParams = useQueryParamsStore((state) => state.setQueryParams);
+
+  const { storeCollections, setStoreCollections } = useCollectionsStore(
+    (state) => state
+  );
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,

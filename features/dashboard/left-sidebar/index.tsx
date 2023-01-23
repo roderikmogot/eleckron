@@ -4,6 +4,7 @@ import { api } from "../../../src/utils/api";
 import useUserStore from "../../../store/use-user.store";
 import useCollectionsStore from "../../../store/use-collections.store";
 import DeleteIcon from "../../ui/svgs/delete-icon.ui";
+import useCollectionsIdx from "../../../store/use-collections-idx.store";
 
 interface ICollection {
   uniqueId: string;
@@ -16,10 +17,12 @@ interface ICollection {
   authBearer: string;
   body: string;
   createdAt: string;
+  responses: string;
 }
 
 const Sidebar = () => {
   const email = useUserStore((state) => state.email);
+  const setUniqueId = useCollectionsIdx((state) => state.setUniqueId);
   const { storeCollections, setStoreCollections } = useCollectionsStore(
     (state) => state
   );
@@ -35,6 +38,8 @@ const Sidebar = () => {
   useEffect(() => {
     if (collections.data) {
       setStoreCollections(collections.data);
+      //@ts-ignore
+      setUniqueId(collections.data[0]!.uniqueId);
     }
   }, [collections.data]);
 
