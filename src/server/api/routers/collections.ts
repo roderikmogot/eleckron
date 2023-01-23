@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import NEW_COLLECTION_TEMPLATE from "./constants/new-collection-template.api.utils";
 import { createTRPCRouter, publicProcedure } from "../trpc";
+import NEW_COLLECTION_TEMPLATE from "./constants/new-collection-template.api.utils";
 
 export const collectionsRouter = createTRPCRouter({
   post: publicProcedure
@@ -64,6 +64,7 @@ export const collectionsRouter = createTRPCRouter({
           createdAt,
           userEmail,
         };
+        //@ts-ignore
         newArr.push(obj);
         return newArr;
       }, []);
