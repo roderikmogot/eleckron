@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "../../../src/utils/api";
 
 import useUserStore from "../../../store/use-user.store";
@@ -44,6 +44,20 @@ const Sidebar = () => {
   const handleCollectionTab = (id: number) => {
     setCollectionsIdx((_) => id);
   };
+
+  useEffect(() => {
+    if (getCollections.data) {
+      if (getCollections.data.length === 0) {
+        setCollections((_) => [COLLECTION_DEFAULT(email)]);
+        return;
+      }
+      setCollections((_) => getCollections.data ?? []);
+    }
+  }, [getCollections.data]);
+
+  if (getCollections.isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const handleAddCollection = () => {
     const newCollection = COLLECTION_DEFAULT(email);

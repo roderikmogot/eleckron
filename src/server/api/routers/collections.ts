@@ -54,6 +54,37 @@ export const collectionsRouter = createTRPCRouter({
         return rest;
       });
 
-      return excludeId;
+      console.log(excludeId);
+
+      const stringified = excludeId.reduce((newArr, curr) => {
+        const {
+          uniqueId,
+          name,
+          method,
+          url,
+          queryParams,
+          authBasic,
+          authBearer,
+          body,
+          createdAt,
+          userEmail,
+        } = curr;
+        const obj = {
+          uniqueId,
+          name,
+          method,
+          url,
+          queryParams: JSON.parse(queryParams),
+          authBasic: JSON.parse(authBasic),
+          authBearer: JSON.parse(authBearer),
+          body: JSON.parse(body),
+          createdAt,
+          userEmail,
+        };
+        newArr.push(obj);
+        return newArr;
+      }, []);
+
+      return stringified;
     }),
 });
