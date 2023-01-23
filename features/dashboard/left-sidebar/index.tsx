@@ -29,9 +29,15 @@ const Sidebar = () => {
 
   const postCollections = api.collections.post.useMutation();
   const deleteCollection = api.collections.delete.useMutation();
-  const collections = api.collections.get.useQuery({
-    email,
-  });
+  const collections = api.collections.get.useQuery(
+    {
+      email,
+    },
+    {
+      staleTime: Infinity,
+      cacheTime: Infinity,
+    }
+  );
 
   const [collectionsIdx, setCollectionsIdx] = useState(0);
 
@@ -44,6 +50,7 @@ const Sidebar = () => {
   }, [collections.data]);
 
   const handleCollectionTab = (id: number) => {
+    setUniqueId(storeCollections[id]!.uniqueId);
     setCollectionsIdx((_) => id);
   };
 

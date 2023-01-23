@@ -32,12 +32,42 @@ interface IStoreCollections {
 
 interface IUseCollections {
   storeCollections: IStoreCollections[];
-  setStoreCollections: (storeCollections: IStoreCollections[]) => void;
+  setStoreCollections: (newCollections: IStoreCollections[]) => void;
 }
 
 const useCollectionsStore = create<IUseCollections>((set) => ({
-  storeCollections: [],
-  setStoreCollections: (storeCollections) => set({ storeCollections }),
+  storeCollections: [{
+    uniqueId: "",
+    userEmail: "",
+    name: "",
+    method: "",
+    url: "",
+    queryParams: [
+      {
+        parameter: "",
+        value: ""
+      }
+    ],
+    authBasic: {
+      username: "",
+      password: ""
+    },
+    authBearer: {
+      token: ""
+    },
+    body: {
+      json: ""
+    },
+    responses: {
+      status: "",
+      output: "",
+      time: ""
+    },
+    createdAt: ""
+  }],
+  setStoreCollections: (newCollections: IStoreCollections[]) => {
+    set({ storeCollections: newCollections });
+  }
 }));
 
 export default useCollectionsStore;
