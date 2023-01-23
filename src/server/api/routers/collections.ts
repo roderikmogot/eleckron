@@ -49,11 +49,11 @@ export const collectionsRouter = createTRPCRouter({
         },
       });
 
-      const excludeFromKeys = res.map((item) => {
+      const excludeId = res.map((item) => {
         const { id, ...rest } = item;
         return rest;
       });
 
-      return excludeFromKeys;
+      return excludeId;
     }),
 });
