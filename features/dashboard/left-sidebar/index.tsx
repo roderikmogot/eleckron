@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "../../../src/utils/api";
 import useUserStore from "../../../store/use-user.store";
 import useCollectionsStore from "../../../store/use-collections.store";
+import DeleteIcon from "../../ui/svgs/delete-icon.ui";
 
 interface ICollection {
   uniqueId: string;
@@ -24,6 +25,7 @@ const Sidebar = () => {
   );
 
   const postCollections = api.collections.post.useMutation();
+  const deleteCollection = api.collections.delete.useMutation();
   const collections = api.collections.get.useQuery({
     email,
   });
@@ -42,6 +44,13 @@ const Sidebar = () => {
 
   const handleAddCollection = () => {
     postCollections.mutate({ email });
+    setTimeout(() => {
+      collections.refetch().catch((err) => console.log(err));
+    }, 500);
+  };
+
+  const handleDeleteCollection = (uniqueId: string) => {
+    deleteCollection.mutate({ uniqueId });
     setTimeout(() => {
       collections.refetch().catch((err) => console.log(err));
     }, 500);
@@ -72,7 +81,9 @@ const Sidebar = () => {
             <ul className="flex w-full flex-col gap-2">
               {collections.data.map((collection: ICollection, idx: number) => (
                 <li
-                  className={`${collectionsIdx === idx ? "bg-gray-600" : ""}`}
+                  className={`${
+                    collectionsIdx === idx ? "bg-gray-600" : ""
+                  } flex flex-row`}
                   key={idx}
                 >
                   <a
@@ -82,6 +93,12 @@ const Sidebar = () => {
                   >
                     {collection.name}
                   </a>
+                  <button
+                    className="px-4 py-2"
+                    onClick={() => handleDeleteCollection(collection.uniqueId)}
+                  >
+                    <DeleteIcon />
+                  </button>
                 </li>
               ))}
             </ul>

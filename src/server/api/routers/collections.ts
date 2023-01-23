@@ -71,4 +71,20 @@ export const collectionsRouter = createTRPCRouter({
 
       return stringified;
     }),
+  delete: publicProcedure
+    .input(
+      z.object({
+        uniqueId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const deleteCollection = await ctx.prisma.requests.delete({
+        where: {
+          uniqueId: input.uniqueId,
+        },
+      });
+      return {
+        data: { code: "200", message: "Data has been successfully deleted!" },
+      };
+    }),
 });
