@@ -14,10 +14,10 @@ model User {
   id    Bytes  @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique
   createdAt DateTime? @default(now())
-  API   API[]
+  Requests   Requests[]
 }
 
-model API {
+model Requests {
   id          Bytes  @id @default(auto()) @map("_id") @db.ObjectId
   uniqueId    String @unique
   name        String

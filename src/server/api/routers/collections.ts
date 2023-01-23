@@ -19,7 +19,7 @@ export const collectionsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      return ctx.prisma.aPI.create({
+      return await ctx.prisma.requests.create({
         data: {
           uniqueId: input.uniqueId,
           name: input.name,
@@ -41,10 +41,19 @@ export const collectionsRouter = createTRPCRouter({
       })
     )
     .query(async ({ input, ctx }) => {
-      return ctx.prisma.aPI.findMany({
+      const res = await ctx.prisma.requests.findMany({
         where: {
-          userEmail: input.email,
+          userEmail: {
+            equals: input.email,
+          },
         },
       });
+
+      const excludeFromKeys = res.map((item) => {
+        const { id, ...rest } = item;
+        return rest;
+      });
+
+      return excludeFromKeys;
     }),
 });

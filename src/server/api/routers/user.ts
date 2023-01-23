@@ -15,10 +15,13 @@ export const userRouter = createTRPCRouter({
         // returnn error code of 409
         return { error: { code: 409, message: "User already exists" } };
       }
-      return ctx.prisma.user.create({
+
+      const res = await ctx.prisma.user.create({
         data: {
           email: input.email,
         },
       });
+
+      return { data: { email: input.email } };
     }),
 });
