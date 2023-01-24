@@ -106,6 +106,21 @@ const Container = () => {
     setStoreCollections(newStoreCollections);
   };
 
+  const handleURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    currCollection!.url = value;
+
+    const newStoreCollections = storeCollections.map((c) => {
+      if (c.uniqueId === uniqueId) {
+        return currCollection;
+      }
+      return c;
+    });
+
+    //@ts-ignore
+    setStoreCollections(newStoreCollections);
+  };
+
   console.log(storeCollections);
 
   return (
@@ -124,6 +139,7 @@ const Container = () => {
         <input
           type="text"
           className="rounded-tb-md w-full rounded-tr-md rounded-br-md border border-gray-300 p-2"
+          onChange={handleURLChange}
         />
       </div>
       <button className="mt-2 w-full bg-blue-700 px-4 py-2 font-bold text-white">
