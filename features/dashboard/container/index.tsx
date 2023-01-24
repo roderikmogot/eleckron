@@ -91,12 +91,34 @@ const Container = () => {
     setMethodIdx(idx);
   };
 
+  const handleRequestMethod = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    currCollection!.method = value;
+
+    const newStoreCollections = storeCollections.map((c) => {
+      if (c.uniqueId === uniqueId) {
+        return currCollection;
+      }
+      return c;
+    });
+
+    //@ts-ignore
+    setStoreCollections(newStoreCollections);
+  };
+
+  console.log(storeCollections);
+
   return (
     <div className="w-[45%] rounded-lg">
       <div className="flex flex-row">
-        <select className="text-bold rounded-tl-md rounded-bl-md bg-black px-4 py-2 font-bold text-white">
+        <select
+          className="text-bold rounded-tl-md rounded-bl-md bg-black px-4 py-2 font-bold text-white"
+          onChange={handleRequestMethod}
+        >
           {REQUEST_METHODS.map((method, idx) => (
-            <option key={idx}>{method}</option>
+            <option key={idx} value={method}>
+              {method}
+            </option>
           ))}
         </select>
         <input
