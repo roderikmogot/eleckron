@@ -94,11 +94,6 @@ export const collectionsRouter = createTRPCRouter({
         body: z.object({
           jsonContent: z.string(),
         }),
-        responses: z.object({
-          status: z.string(),
-          output: z.string(),
-          time: z.string(),
-        }),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -114,7 +109,6 @@ export const collectionsRouter = createTRPCRouter({
           authBasic: JSON.stringify(input.authBasic),
           authBearer: JSON.stringify(input.authBearer),
           body: JSON.stringify(input.body),
-          responses: JSON.stringify(input.responses),
         },
       });
       return {

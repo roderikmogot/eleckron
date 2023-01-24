@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 import { api } from "../../../src/utils/api";
@@ -6,6 +7,8 @@ import UIInput from "../../ui/input/input.ui";
 import UITabs from "../../ui/tabs/tabs.ui";
 import useCollectionsStore from "../../../store/use-collections.store";
 import useCollectionsIdx from "../../../store/use-collections-idx.store";
+import { timeDiffHelper } from "../../../src/utils/axios";
+import { countBytesHelper } from "../../../src/utils/helper";
 
 const REQUEST_METHODS = ["GET", "POST", "PUT", "DELETE"];
 const CONTAINER_TABS = ["Query", "Auth", "Body"];
@@ -21,6 +24,18 @@ const Container = () => {
 
   const putCollection = api.collections.put.useMutation();
   const currCollection = storeCollections.find((c) => c.uniqueId === uniqueId);
+
+  const handleUpdateGlobalCollection = () => {
+    const newStoreCollections = storeCollections.map((c) => {
+      if (c.uniqueId === uniqueId) {
+        return currCollection;
+      }
+      return c;
+    });
+
+    //@ts-ignore
+    setStoreCollections(newStoreCollections);
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -39,15 +54,7 @@ const Container = () => {
 
     currCollection!.queryParams = newQueryParams;
 
-    const newStoreCollections = storeCollections.map((c) => {
-      if (c.uniqueId === uniqueId) {
-        return currCollection;
-      }
-      return c;
-    });
-
-    //@ts-ignore
-    setStoreCollections(newStoreCollections);
+    handleUpdateGlobalCollection();
   };
 
   const handleAddQueryParams = () => {
@@ -60,15 +67,7 @@ const Container = () => {
 
     currCollection!.queryParams = newQueryParams;
 
-    const newStoreCollections = storeCollections.map((c) => {
-      if (c.uniqueId === uniqueId) {
-        return currCollection;
-      }
-      return c;
-    });
-
-    //@ts-ignore
-    setStoreCollections(newStoreCollections);
+    handleUpdateGlobalCollection();
   };
 
   const handleDeleteQueryParam = (idx: number) => {
@@ -78,15 +77,7 @@ const Container = () => {
 
     currCollection!.queryParams = newQueryParams;
 
-    const newStoreCollections = storeCollections.map((c) => {
-      if (c.uniqueId === uniqueId) {
-        return currCollection;
-      }
-      return c;
-    });
-
-    //@ts-ignore
-    setStoreCollections(newStoreCollections);
+    handleUpdateGlobalCollection();
   };
 
   const handleMethodIdx = (idx: number) => {
@@ -97,30 +88,14 @@ const Container = () => {
     const { value } = e.target;
     currCollection!.method = value;
 
-    const newStoreCollections = storeCollections.map((c) => {
-      if (c.uniqueId === uniqueId) {
-        return currCollection;
-      }
-      return c;
-    });
-
-    //@ts-ignore
-    setStoreCollections(newStoreCollections);
+    handleUpdateGlobalCollection();
   };
 
   const handleURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     currCollection!.url = value;
 
-    const newStoreCollections = storeCollections.map((c) => {
-      if (c.uniqueId === uniqueId) {
-        return currCollection;
-      }
-      return c;
-    });
-
-    //@ts-ignore
-    setStoreCollections(newStoreCollections);
+    handleUpdateGlobalCollection();
   };
 
   const handleAuthBasicUsernameChange = (
@@ -135,15 +110,7 @@ const Container = () => {
       currCollection!.authBasic.password = value;
     }
 
-    const newStoreCollections = storeCollections.map((c) => {
-      if (c.uniqueId === uniqueId) {
-        return currCollection;
-      }
-      return c;
-    });
-
-    //@ts-ignore
-    setStoreCollections(newStoreCollections);
+    handleUpdateGlobalCollection();
   };
 
   const handleAuthBearerChange = (
@@ -152,18 +119,33 @@ const Container = () => {
     const { value } = e.target;
     currCollection!.authBearer!.token = value;
 
-    const newStoreCollections = storeCollections.map((c) => {
-      if (c.uniqueId === uniqueId) {
-        return currCollection;
-      }
-      return c;
-    });
-
-    //@ts-ignore
-    setStoreCollections(newStoreCollections);
+    handleUpdateGlobalCollection();
   };
 
-  const handleSendRequest = () => {
+  const handleSendRequest = async () => {
+    const queryParamsObj = currCollection!.queryParams.reduce(
+      (acc, curr) => ({ ...acc, [curr.parameter]: curr.value }),
+      {}
+    );
+
+    const startTime = Date.now();
+
+    if (currCollection!.method === "GET") {
+      await axios
+        .get(currCollection!.url, {
+          params: queryParamsObj,
+        })
+        .then((res) => {
+          currCollection!.responses.time = timeDiffHelper(startTime);
+          currCollection!.responses.output = res.data;
+          currCollection!.responses.status = res.status.toString();
+          currCollection!.responses.size = countBytesHelper(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
+
+    handleUpdateGlobalCollection();
+
     putCollection.mutate({
       uniqueId: currCollection!.uniqueId,
       name: currCollection!.name,
@@ -173,11 +155,8 @@ const Container = () => {
       authBasic: currCollection!.authBasic,
       authBearer: currCollection!.authBearer,
       body: currCollection!.body,
-      responses: currCollection!.responses,
     });
   };
-
-  console.log(storeCollections);
 
   return (
     <div className="w-[45%] rounded-lg">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import rndJson from "../../../src/utils/random.json";
 import useCollectionsStore from "../../../store/use-collections.store";
@@ -8,23 +8,23 @@ const RightSidebar = () => {
   const [resultIdx, setResultIdx] = useState(0);
 
   const { uniqueId } = useCollectionsIdx((state) => state);
-  const { storeCollections, setStoreCollections } = useCollectionsStore(
-    (state) => state
-  );
+  const { storeCollections } = useCollectionsStore((state) => state);
+
+  const currCollection = storeCollections.find((c) => c.uniqueId === uniqueId);
 
   return (
     <div className="w-[40%]">
       <div className="flex flex-row space-x-4">
         <div className="text-xl font-bold">
-          <div>Status: </div>
+          <div>Status: {currCollection!.responses.status}</div>
           <div></div>
         </div>
         <div className="text-xl font-bold">
-          <div>Size: </div>
+          <div>Size: {currCollection!.responses.size}</div>
           <div></div>
         </div>
         <div className="text-xl font-bold">
-          <div>Time: </div>
+          <div>Time: {currCollection!.responses.time}</div>
           <div></div>
         </div>
       </div>
@@ -47,7 +47,7 @@ const RightSidebar = () => {
       </div>
       <div className="mt-4 w-full">
         <div className={resultIdx === 0 ? "block" : "hidden"}>
-          <pre>{JSON.stringify(rndJson, null, 2)}</pre>
+          <pre>{JSON.stringify(currCollection!.responses.output, null, 2)}</pre>
         </div>
       </div>
     </div>
