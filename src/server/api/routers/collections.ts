@@ -71,6 +71,56 @@ export const collectionsRouter = createTRPCRouter({
 
       return stringified;
     }),
+  put: publicProcedure
+    .input(
+      z.object({
+        uniqueId: z.string(),
+        name: z.string(),
+        method: z.string(),
+        url: z.string(),
+        queryParams: z.array(
+          z.object({
+            parameter: z.string(),
+            value: z.string(),
+          })
+        ),
+        authBasic: z.object({
+          username: z.string(),
+          password: z.string(),
+        }),
+        authBearer: z.object({
+          token: z.string(),
+        }),
+        body: z.object({
+          jsonContent: z.string(),
+        }),
+        responses: z.object({
+          status: z.string(),
+          output: z.string(),
+          time: z.string(),
+        }),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const updateCollection = await ctx.prisma.requests.update({
+        where: {
+          uniqueId: input.uniqueId,
+        },
+        data: {
+          name: input.name,
+          method: input.method,
+          url: input.url,
+          queryParams: JSON.stringify(input.queryParams),
+          authBasic: JSON.stringify(input.authBasic),
+          authBearer: JSON.stringify(input.authBearer),
+          body: JSON.stringify(input.body),
+          responses: JSON.stringify(input.responses),
+        },
+      });
+      return {
+        data: { code: "200", message: "Data has been successfully updated!" },
+      };
+    }),
   delete: publicProcedure
     .input(
       z.object({

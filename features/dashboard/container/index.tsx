@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import { api } from "../../../src/utils/api";
 import DeleteIcon from "../../ui/svgs/delete-icon.ui";
 import UIInput from "../../ui/input/input.ui";
 import UITabs from "../../ui/tabs/tabs.ui";
@@ -18,6 +19,7 @@ const Container = () => {
     (state) => state
   );
 
+  const putCollection = api.collections.put.useMutation();
   const currCollection = storeCollections.find((c) => c.uniqueId === uniqueId);
 
   const handleInputChange = (
@@ -161,6 +163,20 @@ const Container = () => {
     setStoreCollections(newStoreCollections);
   };
 
+  const handleSendRequest = () => {
+    putCollection.mutate({
+      uniqueId: currCollection!.uniqueId,
+      name: currCollection!.name,
+      url: currCollection!.url,
+      method: currCollection!.method,
+      queryParams: currCollection!.queryParams,
+      authBasic: currCollection!.authBasic,
+      authBearer: currCollection!.authBearer,
+      body: currCollection!.body,
+      responses: currCollection!.responses,
+    });
+  };
+
   console.log(storeCollections);
 
   return (
@@ -183,7 +199,10 @@ const Container = () => {
           onChange={handleURLChange}
         />
       </div>
-      <button className="mt-2 w-full bg-blue-700 px-4 py-2 font-bold text-white">
+      <button
+        className="mt-2 w-full bg-blue-700 px-4 py-2 font-bold text-white"
+        onClick={handleSendRequest}
+      >
         Send
       </button>
       <div className="mt-4 w-full">
