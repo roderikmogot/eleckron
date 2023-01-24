@@ -144,6 +144,23 @@ const Container = () => {
     setStoreCollections(newStoreCollections);
   };
 
+  const handleAuthBearerChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const { value } = e.target;
+    currCollection!.authBearer!.token = value;
+
+    const newStoreCollections = storeCollections.map((c) => {
+      if (c.uniqueId === uniqueId) {
+        return currCollection;
+      }
+      return c;
+    });
+
+    //@ts-ignore
+    setStoreCollections(newStoreCollections);
+  };
+
   console.log(storeCollections);
 
   return (
@@ -161,6 +178,7 @@ const Container = () => {
         </select>
         <input
           type="text"
+          value={currCollection!.url}
           className="rounded-tb-md w-full rounded-tr-md rounded-br-md border border-gray-300 p-2"
           onChange={handleURLChange}
         />
@@ -232,12 +250,14 @@ const Container = () => {
                   type="text"
                   className="w-full rounded-md border border-gray-300 p-2"
                   placeholder="Username"
+                  value={currCollection!.authBasic.username}
                   onChange={(e) => handleAuthBasicUsernameChange(e, "username")}
                 />
                 <input
                   type="password"
                   className="w-full rounded-md border border-gray-300 p-2"
                   placeholder="Password"
+                  value={currCollection!.authBasic.password}
                   onChange={(e) => handleAuthBasicUsernameChange(e, "password")}
                 />
               </div>
@@ -247,6 +267,8 @@ const Container = () => {
               <textarea
                 className="w-full rounded-md border border-gray-300 p-2"
                 placeholder="Token"
+                value={currCollection!.authBearer.token}
+                onChange={handleAuthBearerChange}
               />
             </div>
           </div>
