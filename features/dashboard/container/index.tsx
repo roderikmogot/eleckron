@@ -121,6 +121,29 @@ const Container = () => {
     setStoreCollections(newStoreCollections);
   };
 
+  const handleAuthBasicUsernameChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    target: "username" | "password"
+  ) => {
+    const { value } = e.target;
+    if (target === "username") {
+      currCollection!.authBasic.username = value;
+    }
+    if (target === "password") {
+      currCollection!.authBasic.password = value;
+    }
+
+    const newStoreCollections = storeCollections.map((c) => {
+      if (c.uniqueId === uniqueId) {
+        return currCollection;
+      }
+      return c;
+    });
+
+    //@ts-ignore
+    setStoreCollections(newStoreCollections);
+  };
+
   console.log(storeCollections);
 
   return (
@@ -209,11 +232,13 @@ const Container = () => {
                   type="text"
                   className="w-full rounded-md border border-gray-300 p-2"
                   placeholder="Username"
+                  onChange={(e) => handleAuthBasicUsernameChange(e, "username")}
                 />
                 <input
                   type="password"
                   className="w-full rounded-md border border-gray-300 p-2"
                   placeholder="Password"
+                  onChange={(e) => handleAuthBasicUsernameChange(e, "password")}
                 />
               </div>
             </div>
