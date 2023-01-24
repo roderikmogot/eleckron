@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 
 import rndJson from "../../../src/utils/random.json";
+import useCollectionsStore from "../../../store/use-collections.store";
+import useCollectionsIdx from "../../../store/use-collections-idx.store";
 
 const RightSidebar = () => {
   const [resultIdx, setResultIdx] = useState(0);
+
+  const { uniqueId } = useCollectionsIdx((state) => state);
+  const { storeCollections, setStoreCollections } = useCollectionsStore(
+    (state) => state
+  );
+
   return (
     <div className="w-[40%]">
       <div className="flex flex-row space-x-4">
