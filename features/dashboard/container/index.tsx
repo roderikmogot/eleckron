@@ -130,19 +130,41 @@ const Container = () => {
 
     const startTime = Date.now();
 
-    if (currCollection!.method === "GET") {
-      await axios
-        .get(currCollection!.url, {
-          params: queryParamsObj,
-        })
-        .then((res) => {
-          currCollection!.responses.time = timeDiffHelper(startTime);
-          currCollection!.responses.output = res.data;
-          currCollection!.responses.status = res.status.toString();
-          currCollection!.responses.size = countBytesHelper(res.data);
-        })
-        .catch((err) => console.log(err));
+    const baseConfig = {
+      url: currCollection!.url,
+      method: currCollection!.method,
+      params: queryParamsObj,
     }
+
+    let config = {}
+
+    if(authIdx === 0){
+      config = {
+        ...baseConfig,
+        auth: {
+          username: currCollection!.authBasic.username,
+          password: currCollection!.authBasic.password,
+        },
+      }
+    }
+
+    if(authIdx === 1) {
+      config = {
+        ...baseConfig,
+        headers: {
+          Authorization: `Bearer ${currCollection!.authBearer?.token}`,
+        },
+      }
+    }
+
+    await axios(config)
+      .then((res) => {
+        currCollection!.responses.time = timeDiffHelper(startTime);
+        currCollection!.responses.output = res.data;
+        currCollection!.responses.status = res.status.toString();
+        currCollection!.responses.size = countBytesHelper(res.data);
+      })
+      .catch((err) => console.log(err));
 
     handleUpdateGlobalCollection();
 
