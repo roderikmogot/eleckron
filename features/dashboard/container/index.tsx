@@ -16,6 +16,7 @@ const CONTAINER_TABS = ["Query", "Auth", "Body"];
 const Container = () => {
   const [authIdx, setAuthIdx] = useState(0);
   const [methodIdx, setMethodIdx] = useState(0);
+  const [bodyIdx, setBodyIdx] = useState(0);
 
   const { uniqueId } = useCollectionsIdx((state) => state);
   const { storeCollections, setStoreCollections } = useCollectionsStore(
@@ -122,6 +123,13 @@ const Container = () => {
     handleUpdateGlobalCollection();
   };
 
+  const handleBodyJSONChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = e.target;
+    currCollection!.body!.jsonContent = value;
+
+    handleUpdateGlobalCollection();
+  };
+
   const handleSendRequest = async () => {
     const queryParamsObj = currCollection!.queryParams.reduce(
       (acc, curr) => ({ ...acc, [curr.parameter]: curr.value }),
@@ -134,27 +142,37 @@ const Container = () => {
       url: currCollection!.url,
       method: currCollection!.method,
       params: queryParamsObj,
-    }
+    };
 
-    let config = {}
+    let config = {};
 
-    if(authIdx === 0){
+    if (authIdx === 0) {
       config = {
         ...baseConfig,
         auth: {
           username: currCollection!.authBasic.username,
           password: currCollection!.authBasic.password,
         },
-      }
+      };
     }
 
-    if(authIdx === 1) {
+    if (authIdx === 1) {
       config = {
         ...baseConfig,
         headers: {
           Authorization: `Bearer ${currCollection!.authBearer?.token}`,
         },
-      }
+      };
+    }
+
+    if (currCollection!.body.jsonContent) {
+      config = {
+        ...config,
+        data: JSON.parse(currCollection!.body?.jsonContent),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
     }
 
     await axios(config)
@@ -289,6 +307,23 @@ const Container = () => {
                 placeholder="Token"
                 value={currCollection!.authBearer.token}
                 onChange={handleAuthBearerChange}
+              />
+            </div>
+          </div>
+        </div>
+        <div className={methodIdx === 2 ? "block" : "hidden"}>
+          <UITabs
+            tabs={["JSON"]}
+            methodIdx={bodyIdx}
+            handleMethodIdx={setBodyIdx}
+          />
+          <div className="mt-4">
+            <div className={bodyIdx === 0 ? "block" : "hidden"}>
+              <div className="text-xl font-bold">JSON</div>
+              <textarea
+                className="w-full rounded-md border border-gray-300 p-2"
+                value={currCollection!.body.jsonContent}
+                onChange={handleBodyJSONChange}
               />
             </div>
           </div>
