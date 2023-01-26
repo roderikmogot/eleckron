@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import rndJson from "../../../src/utils/random.json";
 import useCollectionsStore from "../../../store/use-collections.store";
 import useCollectionsIdx from "../../../store/use-collections-idx.store";
 
