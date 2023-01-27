@@ -92,19 +92,23 @@ const Sidebar = () => {
               {collections.data.map((collection: ICollection, idx: number) => (
                 <li
                   className={`${
-                    collectionsIdx === idx ? "bg-gray-600" : ""
+                    collectionsIdx === idx ? "bg-black" : ""
                   } flex flex-row`}
                   key={idx}
                 >
                   <a
                     href="#"
                     onClick={() => handleCollectionTab(idx)}
-                    className="flex w-full border-2 border-b-black border-l-transparent border-t-transparent border-r-transparent px-4 py-2 font-bold text-gray-300"
+                    className={`flex w-full border-2 border-b-black border-l-transparent border-t-transparent border-r-transparent px-4 py-2 font-bold ${
+                      collectionsIdx === idx ? "text-white" : "text-black"
+                    }`}
                   >
                     {collection.name}
                   </a>
                   <button
-                    className="px-4 py-2"
+                    className={`px-4 py-2 ${
+                      collectionsIdx === idx ? "text-red-500" : "hidden"
+                    }`}
                     onClick={() => handleDeleteCollection(collection.uniqueId)}
                   >
                     <DeleteIcon />
