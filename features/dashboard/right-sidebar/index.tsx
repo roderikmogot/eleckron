@@ -46,7 +46,7 @@ const RightSidebar = () => {
       </div>
       <div className="mt-4 w-full">
         <div className={resultIdx === 0 ? "block" : "hidden"}>
-          <pre className="w-full whitespace-pre-wrap">
+          <pre className="w-full whitespace-pre-wrap text-sm">
             {JSON.stringify(currCollection!.responses.output, null, 2)}
           </pre>
         </div>

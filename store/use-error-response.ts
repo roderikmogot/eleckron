@@ -5,9 +5,9 @@ interface IUseErrorResponseStore {
   setErrorResponse: (error: string) => void;
 }
 
-const useCollectionsIdx = create<IUseErrorResponseStore>((set) => ({
+const useErrorResponse = create<IUseErrorResponseStore>((set) => ({
   errorResponse: "",
   setErrorResponse: (msg: string) => set({ errorResponse: msg }),
 }));
 
-export default useCollectionsIdx;
+export default useErrorResponse;
