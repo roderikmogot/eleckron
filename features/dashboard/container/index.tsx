@@ -179,10 +179,18 @@ const Container = () => {
       .then((res) => {
         currCollection!.responses.time = timeDiffHelper(startTime);
         currCollection!.responses.output = res.data;
-        currCollection!.responses.status = res.status.toString();
+        currCollection!.responses.status =
+          res.status.toString() + " - " + res.statusText;
         currCollection!.responses.size = countBytesHelper(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        currCollection!.responses.time = timeDiffHelper(startTime);
+        currCollection!.responses.output = err.response.data;
+        currCollection!.responses.status =
+          err.response.status.toString() + " - " + err.response.statusText;
+        currCollection!.responses.size = countBytesHelper(err.response.data);
+        console.error(err);
+      });
 
     const urlSplit = currCollection!.url.split("/").slice(-2);
     currCollection!.name =
