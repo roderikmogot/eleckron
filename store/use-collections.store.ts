@@ -64,6 +64,7 @@ const useCollectionsStore = create<IUseCollections>((set) => ({
         status: "",
         output: "",
         time: "",
+        size: "",
       },
       createdAt: "",
     },

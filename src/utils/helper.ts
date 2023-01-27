@@ -1,4 +1,4 @@
-export const countBytesHelper = (size: any) => {
+export const countBytesHelper = (size: object) => {
   const bytes = new TextEncoder().encode(JSON.stringify(size)).length;
   if (bytes < 1024) {
     return `${bytes} bytes`;
