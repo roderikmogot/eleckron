@@ -76,8 +76,6 @@ const Sidebar = () => {
     return <div>Error</div>;
   }
 
-  console.log(storeCollections);
-
   return (
     <div className="h-[90vh] w-[15%] overflow-auto">
       <div className="flex w-full flex-col">
