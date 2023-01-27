@@ -184,6 +184,10 @@ const Container = () => {
       })
       .catch((err) => console.log(err));
 
+    const urlSplit = currCollection!.url.split("/").slice(-2);
+    currCollection!.name =
+      currCollection!.method + " - " + urlSplit[0] + "/" + urlSplit[1];
+
     handleUpdateGlobalCollection();
 
     putCollection.mutate({
