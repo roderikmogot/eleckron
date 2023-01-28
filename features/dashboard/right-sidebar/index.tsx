@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Editor from "@monaco-editor/react";
 
 import useCollectionsStore from "../../../store/use-collections.store";
 import useCollectionsIdx from "../../../store/use-collections-idx.store";
@@ -61,10 +62,24 @@ const RightSidebar = () => {
           </li>
         </ul>
       </div>
-      <div className="mt-4 w-full">
+      <div className="mt-4 h-full w-full">
         <div className={resultIdx === 0 ? "block" : "hidden"}>
           <pre className="w-full whitespace-pre-wrap text-sm">
-            {JSON.stringify(currCollection!.responses.output, null, 2)}
+            <Editor
+              className="min-h-[50vh] w-full whitespace-pre-wrap"
+              theme="vs-dark"
+              language="json"
+              value={JSON.stringify(currCollection!.responses.output, null, 2)}
+              wrapperProps={{
+                className: "w-full",
+              }}
+              options={{
+                readOnly: true,
+                minimap: {
+                  enabled: false,
+                },
+              }}
+            />
           </pre>
         </div>
       </div>
