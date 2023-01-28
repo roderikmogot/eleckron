@@ -66,7 +66,7 @@ const RightSidebar = () => {
         <div className={resultIdx === 0 ? "block" : "hidden"}>
           <pre className="w-full whitespace-pre-wrap text-sm">
             <Editor
-              className="min-h-[50vh] w-full whitespace-pre-wrap"
+              className="min-h-[80vh] w-full whitespace-pre-wrap"
               theme="vs-dark"
               language="json"
               value={JSON.stringify(currCollection!.responses.output, null, 2)}
