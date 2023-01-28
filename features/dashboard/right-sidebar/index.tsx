@@ -10,21 +10,38 @@ const RightSidebar = () => {
   const { storeCollections } = useCollectionsStore((state) => state);
 
   const currCollection = storeCollections.find((c) => c.uniqueId === uniqueId);
+  const currStatus = +currCollection!.responses.status.split("-")[0]!;
 
   return (
     <div className="w-[40%]">
       <div className="flex flex-row space-x-4">
-        <div className="text-xl font-bold">
-          <div>Status: {currCollection!.responses.status}</div>
-          <div></div>
+        <div className="flex flex-row items-center gap-1 text-xl font-bold">
+          <div className="text-[1rem]">
+            Status:
+            <span
+              className={`ml-1 inline-block ${
+                currStatus >= 400 ? "text-red-600" : "text-green-600"
+              }`}
+            >
+              {currCollection!.responses.status}
+            </span>
+          </div>
         </div>
         <div className="text-xl font-bold">
-          <div>Size: {currCollection!.responses.size}</div>
-          <div></div>
+          <div className="text-[1rem]">
+            Size:
+            <span className="ml-1 inline-block font-thin">
+              {currCollection!.responses.size}
+            </span>
+          </div>
         </div>
         <div className="text-xl font-bold">
-          <div>Time: {currCollection!.responses.time}</div>
-          <div></div>
+          <div className="text-[1rem]">
+            Time:
+            <span className="ml-1 inline-block font-thin">
+              {currCollection!.responses.time}
+            </span>
+          </div>
         </div>
       </div>
       <div className="mt-4 w-full">
