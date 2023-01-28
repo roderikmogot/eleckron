@@ -10,6 +10,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <>
       <Head>
         <title>Eleckron</title>
+        <meta name="description" content="Eleckron" />
       </Head>
       <Component {...pageProps} />
     </>
