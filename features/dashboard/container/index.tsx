@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 import { api } from "../../../src/utils/api";
 import DeleteIcon from "../../ui/svgs/delete-icon.ui";
@@ -8,7 +9,7 @@ import UITabs from "../../ui/tabs/tabs.ui";
 import useCollectionsStore from "../../../store/use-collections.store";
 import useCollectionsIdx from "../../../store/use-collections-idx.store";
 import { timeDiffHelper } from "../../../src/utils/axios";
-import { countBytesHelper } from "../../../src/utils/helper";
+import { countBytesHelper, isValidJSONHelper } from "../../../src/utils/helper";
 
 const REQUEST_METHODS = ["GET", "POST", "PUT", "DELETE"];
 const CONTAINER_TABS = ["Query", "Auth", "Body"];
@@ -165,10 +166,17 @@ const Container = () => {
       };
     }
 
+    if (!isValidJSONHelper(currCollection!.body.jsonContent)) {
+      toast.error("Invalid body JSON!", {
+        duration: 2000,
+      });
+      return;
+    }
+
     if (currCollection!.body.jsonContent) {
       config = {
         ...config,
-        data: JSON.parse(currCollection!.body?.jsonContent),
+        data: JSON.parse(currCollection!.body.jsonContent),
         headers: {
           "Content-Type": "application/json",
         },
@@ -341,6 +349,15 @@ const Container = () => {
           </div>
         </div>
       </div>
+      <Toaster
+        position="bottom-left"
+        reverseOrder={false}
+        toastOptions={{
+          style: {
+            fontSize: 14,
+          },
+        }}
+      />
     </div>
   );
 };

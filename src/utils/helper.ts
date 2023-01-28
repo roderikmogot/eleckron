@@ -8,3 +8,13 @@ export const countBytesHelper = (size: object) => {
     return `${(bytes / 1048576).toFixed(3)} MB`;
   }
 };
+
+export const isValidJSONHelper = (json: string) => {
+  if (json === "") return true;
+  try {
+    JSON.parse(json);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
