@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { type AppType } from "next/app";
+import { Toaster } from "react-hot-toast";
 
 import { api } from "../utils/api";
 
@@ -13,6 +14,15 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <meta name="description" content="Eleckron" />
       </Head>
       <Component {...pageProps} />
+      <Toaster
+        position="bottom-left"
+        reverseOrder={false}
+        toastOptions={{
+          style: {
+            fontSize: 14,
+          },
+        }}
+      />
     </>
   );
 };

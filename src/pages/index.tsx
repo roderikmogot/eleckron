@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 import useUserStore from "../../store/use-user.store";
 import { api } from "../utils/api";
@@ -20,8 +21,10 @@ const Home: NextPage = () => {
     if (emailInput.length === 0) return;
     postUser.mutate({ email: emailInput });
     setEmail(emailInput);
+
+    toast.success("Redirecting...");
     setTimeout(() => {
-      router.push("/dashboard").catch((err) => console.log(err));
+      router.push("/dashboard").catch((_) => toast.error("Unable to redirect"));
     }, 1000);
   };
 

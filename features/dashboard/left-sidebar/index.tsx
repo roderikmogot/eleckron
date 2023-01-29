@@ -1,5 +1,5 @@
-import { toast, Toaster } from "react-hot-toast";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 import { api } from "../../../src/utils/api";
 import DeleteIcon from "../../ui/svgs/delete-icon.ui";
@@ -133,7 +133,6 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 };

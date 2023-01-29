@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 import { api } from "../../../src/utils/api";
 import DeleteIcon from "../../ui/svgs/delete-icon.ui";
@@ -349,15 +349,6 @@ const Container = () => {
           </div>
         </div>
       </div>
-      <Toaster
-        position="bottom-left"
-        reverseOrder={false}
-        toastOptions={{
-          style: {
-            fontSize: 14,
-          },
-        }}
-      />
     </div>
   );
 };
