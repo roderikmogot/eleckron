@@ -1,5 +1,7 @@
-import axios from "axios";
 import React, { useState } from "react";
+import Editor from "@monaco-editor/react";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import axios from "axios";
 import toast from "react-hot-toast";
 
 import { api } from "../../../src/utils/api";
@@ -124,8 +126,15 @@ const Container = () => {
     handleUpdateGlobalCollection();
   };
 
-  const handleBodyJSONChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = e.target;
+  const handleBodyJSONChange = (
+    value: string | undefined,
+    _: monaco.editor.IModelContentChangedEvent
+  ) => {
+    if (value === undefined) {
+      currCollection!.body!.jsonContent = "";
+      return;
+    }
+
     currCollection!.body!.jsonContent = value;
 
     handleUpdateGlobalCollection();
@@ -340,10 +349,15 @@ const Container = () => {
           <div className="mt-4">
             <div className={bodyIdx === 0 ? "block" : "hidden"}>
               <div className="text-xl font-bold">JSON</div>
-              <textarea
-                className="w-full rounded-md border border-gray-300 p-2"
+              <Editor
+                language="json"
                 value={currCollection!.body.jsonContent}
                 onChange={handleBodyJSONChange}
+                className="min-h-[40vh] w-full whitespace-pre-wrap"
+                theme="vs-dark"
+                wrapperProps={{
+                  className: "w-full",
+                }}
               />
             </div>
           </div>
